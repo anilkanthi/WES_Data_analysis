@@ -1,0 +1,47 @@
+﻿ANNOTATION —>
+
+
+1) Conversion of VCF to ANNOVAR Compatible Format:
+
+   perl /home/genetics/Documents/anil/annovar/convert2annovar.pl -format vcf4 Shriya.vcf -allsample -outfile Shriya
+
+2) Filtering using ExAC database with score threshold 0.02:
+
+   perl /home/genetics/Documents/anil/annovar/annotate_variation.pl -filter -buildver hg19 -dbtype exac03 -score_threshold 0.02 Shriya.62280217_S40.avinput /home/genetics/Documents/anil/annovar/humandb/
+
+   perl /home/genetics/Documents/anil/annovar/annotate_variation.pl -filter -buildver hg19 -dbtype 1000g2015aug_all -score_threshold 0.02 Shriya.62280217_S40.avinput.hg19_exac03_filtered /home/genetics/Documents/anil/annovar/humandb/
+
+   perl /home/genetics/Documents/anil/annovar/annotate_variation.pl -filter -buildver hg19 -dbtype esp6500siv2_all -score_threshold 0.02 Shriya.62280217_S40.avinput.hg19_exac03_filtered.hg19_ALL.sites.2015_08_filtered /home/genetics/Documents/anil/annovar/humandb/
+
+3) Main Annotation command:
+
+   perl /home/genetics/Documents/anil/annovar/table_annovar.pl Shriya.62280217_S40.avinput.hg19_exac03_filtered.hg19_ALL.sites.2015_08_filtered.hg19_esp6500siv2_all_filtered /home/genetics/Documents/anil/annovar/humandb/ -buildver hg19 -out Shriya -protocol refGene,gnomad_exome,gnomad_genome,snp138,clinvar_20170130,dbscsnv11,exac03,avsnp147,dbnsfp33a,dbscsnv11,mcap,cadd13gt10,intervar_20170202,generic,generic,generic,generic,generic -operation g,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f -nastring . -remove -otherinfo -dot2underline -arg "-splicing_threshold 20 -hgvs -exonsort -thread 2 -infosep",,,,,,,,,,,,,,,,, -genericdbfile NEW_MOD_FREQ_ANNOVAR_360PatCount_29th_July,NEW_MOD_FREQ_ANNOVAR_HET_360PatCount_29th_July,NEW_MOD_FREQ_ANNOVAR_HOM_360PatCount_29th_July,Gnomad_exome_het,Gnomad_exome_hom
+   
+4) Integration of OMIM Data:
+  
+   perl /home/genetics/Documents/anil/annovar/MOD_OMIM.pl Shriya.hg19_multianno.txt OMIM_Shriya
+
+5) Integration of HPO Data: 
+  
+   perl /home/genetics/Documents/anil/annovar/HPO_match.pl OMIM_Shriya HPO_Shriya
+   
+6) Integration  of KEGGSeq Data:   
+   
+   java -Xmx3g -jar /home/genetics/Documents/anil/kggseq10r/kggseq.jar --vcf-file Shriya.vcf --out Shriya_KggSeq --excel --db-gene refgene --patho-gene-predict  --regulatory-causing-predict all --gene-feature-in 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 --mouse-pheno --zebrafish-pheno --ddd-annot --nt 2
+
+
+EXCEL SHEET EDITING —>
+																  
+1) VBA CODE:
+
+Sub sbVBS_To_Delete_Specific_Multiple_Columns()
+Sheets("Sheet1").Range("L:R,U:AA,AE:AI,AK:AP,AS:AS,AU:AU,AW:AW,AY:AY,BA:BA,BC:BC,BE:BE,BG:BG,BI:BJ,BL:BL,BR:BZ,CB:CF,CJ:CK,CN:DO").EntireColumn.Delete
+End Sub	
+
+2) Renaming columns after using VBA code:
+
+In_house_AlleleFrequency	In_house_HetCount	In_house_HomCount	gnomAD_exome_HetCount	gnomAD_exome_HomCount	Shriya_Zygosity	Shriya_Read_Quality	Shriya_Read_Number	OMIM_Gene_Symbol	OMIM_Phenotype	HPO_Terms
+
+3) bioDBnet Link:
+
+https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
